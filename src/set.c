@@ -20,6 +20,7 @@ static void no_remover(NO *raiz, int elemento);
 static NO *no_rotacionarEsquerda(NO *raiz);
 static NO *no_rotacionarDireita(NO *raiz);
 static void no_apagar(NO *no);
+static void no_apagarArvore(NO *no);
 
 static NO *no_criar(int elemento, int prioridade){
 	NO *no = (NO*) malloc(sizeof(NO));
@@ -114,6 +115,16 @@ static NO* no_rotacionarDireita(NO *raiz){
 }
 
 static void no_apagar(NO *no){
+	free(no);
+}
+
+static void no_apagarArvore(NO *no){
+	if(no == NULL) return;
+
+	no_apagarArvore(no->esq);
+	no_apagarArvore(no->dir);
+
+	no_apagar(no);
 }
 
 SET *set_criar(void){
@@ -121,15 +132,21 @@ SET *set_criar(void){
 }
 
 bool set_pertence(SET *A, int elemento){
-	return false;
+	return no_busca(A->raiz, elemento);
 }
 
 bool set_inserir(SET *s, int elemento){
+	no_inserir(s->raiz, elemento, rand());
+
 	return true;
 }
 
 bool set_remover(SET *s, int elemento){
-	return false;
+	if(!no_busca(s->raiz, elemento)) return false;
+
+	no_remover(s->raiz, elemento);
+
+	return true;
 }
 
 void set_apagar(SET **s){
