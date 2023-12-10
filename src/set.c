@@ -1,9 +1,46 @@
 #include "set.h"
 
-struct set{
+typedef struct no_s{
+	int prioridade;
+	int elemento;
 
+	struct no_s *esq;
+	struct no_s *dir;
+} NO;
+
+struct set{
+	NO *raiz;
 };
 
+/* funções locais */
+static NO* no_criar(int elemento, int prioridade);
+static bool no_busca(NO *raiz, int elemento);
+static void no_inserir(NO *raiz, int elemento, int prioridade);
+static void no_remover(NO *raiz, int elemento);
+static NO *no_rotacionarEsquerda(NO *raiz);
+static NO *no_rotacionarDireita(NO *raiz);
+static void no_apagar(NO *no);
+
+static NO *no_criar(int elemento, int prioridade){
+}
+
+static bool no_busca(NO *raiz, int elemento){
+}
+
+static void no_inserir(NO *raiz, int elemento, int prioridade){
+}
+
+static void no_remover(NO *raiz, int elemento){
+}
+
+static NO* no_rotacionarEsquerda(NO *raiz){
+}
+
+static NO* no_rotacionarDireita(NO *raiz){
+}
+
+static void no_apagar(NO *no){
+}
 
 SET *set_criar(void){
 
