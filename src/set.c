@@ -31,13 +31,14 @@ static NO *no_criar(int elemento, int prioridade){
 }
 
 static bool no_busca(NO *raiz, int elemento){
+	return false;
 }
 
 static void no_inserir(NO *raiz, int elemento, int prioridade){
 }
 
 static void no_remover(NO *raiz, int elemento){
-	if(!no_busca(raiz)) return;
+	if(!no_busca(raiz, elemento)) return;
 	NO* pai = raiz;
 	NO* filho = raiz;
 
@@ -45,7 +46,7 @@ static void no_remover(NO *raiz, int elemento){
 		if(elemento == filho->elemento){
 			break;
 		}
-		else if(elem < filho->elemento){
+		else if(elemento < filho->elemento){
 			pai = filho;
 			filho = filho->esq;
 		}
@@ -81,22 +82,14 @@ static void no_remover(NO *raiz, int elemento){
 		NO* tmp;
 		/* rotaciona para esquerda para manter a ordem de heap */
 		if(filho->dir->prioridade > filho->esq->prioridade){
-			tmp = no_rotacionaDireita(filho);
+			tmp = no_rotacionarEsquerda(filho);
 		}
-		else tmp = no_rotacionaEsquerda(filho);
+		else tmp = no_rotacionarDireita(filho);
 
 		if(filho == pai->esq) pai->esq = tmp;
 		if(filho == pai->dir) pai->dir = tmp;
 
-		int elem = no_buscaMaiorChave(filho->esq);
-		filho->elem = elem;
-
-		if(filho->esq->elem == elem){
-			free(filho->esq);
-			filho->esq = NULL;
-		}
-		else
-			no_remover(filho->esq, elem);
+		no_remover(tmp, elemento);
 	}
 }
 
@@ -124,19 +117,19 @@ static void no_apagar(NO *no){
 }
 
 SET *set_criar(void){
-
+	return NULL;
 }
 
 bool set_pertence(SET *A, int elemento){
-
+	return false;
 }
 
-bool set_inserir (SET *s, int elemento){
-
+bool set_inserir(SET *s, int elemento){
+	return true;
 }
 
 bool set_remover(SET *s, int elemento){
-
+	return false;
 }
 
 void set_apagar(SET **s){
@@ -148,9 +141,9 @@ void set_imprimir(SET *s){
 }
 
 SET *set_uniao(SET *A, SET *B){
-
+	return NULL;
 }
 
 SET *set_interseccao(SET *A, SET *B){
-
+	return NULL;
 }
