@@ -18,7 +18,7 @@ static NO* no_busca(NO *raiz, int elemento);
 static bool no_inserir(NO **raiz, int elemento, int prioridade);
 static void no_remover(NO **raiz, int elemento);
 static void no_uniao(NO *no, SET *C);
-
+static void no_inter(NO *A, NO *B, SET *C);
 static NO *no_rotacionarEsquerda(NO *raiz);
 static NO *no_rotacionarDireita(NO *raiz);
 static void no_imprimir(NO* raiz);
@@ -35,6 +35,8 @@ static NO *no_criar(int elemento, int prioridade){
 }
 
 static NO* no_busca(NO *raiz, int elemento){
+	if(raiz == NULL) return NULL;
+
 	if(raiz->elemento == elemento)
 		return raiz;
 
@@ -123,6 +125,17 @@ static void no_uniao(NO *no, SET *C){
 	no_uniao(no->dir, C);
 }
 
+static void no_inter(NO *A, NO *B, SET *C){
+	if(A == NULL) return;
+
+	if(no_busca(B, A->elemento)){
+		set_inserir(C, A->elemento);
+	}
+
+	no_inter(A->esq, B, C);
+	no_inter(A->dir, B, C);
+}
+
 static NO* no_rotacionarEsquerda(NO *raiz){
 	NO *aux;
 
@@ -185,7 +198,7 @@ bool set_inserir(SET *s, int elemento){
 }
 
 bool set_remover(SET *s, int elemento){
-	if(!no_busca(s->raiz, elemento)) return false;
+	if(no_busca(s->raiz, elemento) == NULL) return false;
 
 	no_remover(&s->raiz, elemento);
 
@@ -216,5 +229,10 @@ SET *set_uniao(SET *A, SET *B){
 
 SET *set_interseccao(SET *A, SET *B){
 	SET *C;
-	return NULL;
+
+	C = set_criar();
+
+	no_inter(A->raiz, B->raiz, C);
+
+	return C;
 }
