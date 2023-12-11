@@ -8,6 +8,7 @@ int main(){
 	SET *A, *B;
   	int n_a, n_b, x;
   	int op, num;
+	int quit = 0;
 
 	A = set_criar();
 	B = set_criar();
@@ -24,40 +25,51 @@ int main(){
     	set_inserir(B, x);
   	}
 
-  	scanf("%d", &op);
+	while(!quit){
+  		scanf("%d", &op);
 
-	switch(op){
-		case 1: {
-			scanf("%d", &num);
-			if(set_pertence(A,num)) 
-				printf("Pertence.");
-			else
-				printf("Não Pertence.");
-			break;
-    	}
-    	case 2: {
-			SET *C = set_uniao(A,B);
-			set_imprimir(C);
-			set_apagar(&C);
-			break;
-    	}
-    	case 3: {
-			SET *C = set_interseccao(A, B);
-			set_imprimir(C);
-			set_apagar(&C);
-			break;
-    	}
-    	case 4: {
-			int num;
-			scanf("%d", &num);
-			set_remover(A,num);
-			set_imprimir(A); 
-			break;
-    	}
-    	case 5: {
-			set_imprimir(A); 
-			break;
-    	}
+		switch(op){
+			case 0: {
+				quit = 1;
+				break;
+			}
+			case 1: {
+				scanf("%d", &num);
+				if(set_pertence(A,num)) 
+					printf("Pertence.\n");
+				else
+					printf("Nao Pertence.\n");
+				break;
+    		}
+    		case 2: {
+				SET *C = set_uniao(A,B);
+				printf("Uniao: ");
+				set_imprimir(C);
+				set_apagar(&C);
+				break;
+    		}
+    		case 3: {
+				SET *C = set_interseccao(A, B);
+				printf("Interseccao: ");
+				set_imprimir(C);
+				set_apagar(&C);
+				break;
+    		}
+    		case 4: {
+				int num;
+				scanf("%d", &num);
+				set_remover(A,num);
+				set_imprimir(A); 
+				break;
+    		}
+    		case 5: {
+				printf("A: ");
+				set_imprimir(A); 
+				printf("B: ");
+				set_imprimir(B); 
+				break;
+    		}
+		}
 	}
 
 	set_imprimir(A);
