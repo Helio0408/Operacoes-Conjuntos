@@ -52,8 +52,16 @@ int main(){
 			scanf("%d", &num);
 			set_remover(A,num);
 			set_imprimir(A); 
+			break;
+    	}
+    	case 5: {
+			set_imprimir(A); 
+			break;
     	}
 	}
+
+	set_imprimir(A);
+	set_imprimir(B);
 
 	set_apagar(&A);
 	set_apagar(&B);

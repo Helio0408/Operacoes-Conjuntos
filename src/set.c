@@ -15,8 +15,10 @@ struct set{
 /* funções locais */
 static NO* no_criar(int elemento, int prioridade);
 static NO* no_busca(NO *raiz, int elemento);
-static bool no_inserir(NO *raiz, int elemento, int prioridade);
-static void no_remover(NO *raiz, int elemento);
+static bool no_inserir(NO **raiz, int elemento, int prioridade);
+static void no_remover(NO **raiz, int elemento);
+static void no_uniao(NO *no, SET *C);
+
 static NO *no_rotacionarEsquerda(NO *raiz);
 static NO *no_rotacionarDireita(NO *raiz);
 static void no_imprimir(NO* raiz);
@@ -43,88 +45,83 @@ static NO* no_busca(NO *raiz, int elemento){
 		return no_busca(raiz->dir, elemento);
 }
 
-static bool no_inserir(NO *raiz, int elemento, int prioridade){
+static bool no_inserir(NO **raiz, int elemento, int prioridade){
 	bool aux;
-	NO *comp;
+	NO **comp;
 
-	if(raiz == NULL){
-		raiz->esq = no_criar(elemento, prioridade);
-		return true;
+	if(*raiz == NULL){
+		*raiz = no_criar(elemento, prioridade);
 	}
 	
-	if(elemento < raiz->elemento){
-		comp = raiz->esq;
-	}else if(elemento > raiz->elemento){
-		comp = raiz->dir;
+	if(elemento < (*raiz)->elemento){
+		comp = &((*raiz)->esq);
+	}else if(elemento > (*raiz)->elemento){
+		comp = &((*raiz)->dir);
 	}else
 		return false;
 		
 	aux = no_inserir(comp, elemento, prioridade);
 
-	if(aux && comp->prioridade > raiz->prioridade){
-		if(comp == raiz->esq)
-			raiz = no_rotacionarDireita(raiz);
+	if(aux && (*comp)->prioridade > (*raiz)->prioridade){
+		if((*comp) == (*raiz)->esq)
+			*raiz = no_rotacionarDireita(*raiz);
 		else
-			raiz = no_rotacionarEsquerda(raiz);
+			*raiz = no_rotacionarEsquerda(*raiz);
 	}
 
 	return true;
 }
 
-static void no_remover(NO *raiz, int elemento){
-	if(!no_busca(raiz, elemento)) return;
-	NO* pai = raiz;
-	NO* filho = raiz;
+static void no_remover(NO **raiz, int elemento){
+	NO *tmp;
 
-	while(1){
-		if(elemento == filho->elemento){
-			break;
-		}
-		else if(elemento < filho->elemento){
-			pai = filho;
-			filho = filho->esq;
-		}
-		else{
-			pai = filho;
-			filho = filho->dir;
-		}
+	if(*raiz == NULL) return;
+
+	if(elemento < (*raiz)->elemento){
+		no_remover(&((*raiz)->esq), elemento);
+		return;
+	}
+	else if(elemento > (*raiz)->elemento){
+		no_remover(&((*raiz)->dir), elemento);
+		return;
 	}
 
-	if(filho->esq == NULL && filho->dir == NULL){
-		if(filho == pai->esq) pai->esq = NULL;
-		if(filho == pai->dir) pai->dir = NULL;
+	if(elemento != (*raiz)->elemento) return;
 
-		free(filho);
+	if((*raiz)->esq == NULL && (*raiz)->dir == NULL){
+		no_apagar(*raiz);
+		*raiz = NULL;
 	}
-	else if(filho->esq == NULL){
-		if(filho == pai->esq) pai->esq = NULL;
-		if(filho == pai->dir) pai->dir = NULL;
-
-		filho->elemento = filho->dir->elemento;
-		filho->prioridade = filho->dir->prioridade;
-		free(filho->dir);
+	else if((*raiz)->esq == NULL){
+		tmp = *raiz;
+		*raiz = (*raiz)->dir;
+		no_apagar(tmp);
 	}
-	else if(filho->dir == NULL){
-		if(filho == pai->esq) pai->esq = NULL;
-		if(filho == pai->dir) pai->dir = NULL;
-
-		filho->elemento = filho->esq->elemento;
-		filho->prioridade = filho->esq->prioridade;
-		free(filho->esq);
+	else if((*raiz)->dir == NULL){
+		tmp = *raiz;
+		*raiz = (*raiz)->esq;
+		no_apagar(tmp);
 	}
 	else{
-		NO* tmp;
-		/* rotaciona para esquerda para manter a ordem de heap */
-		if(filho->dir->prioridade > filho->esq->prioridade){
-			tmp = no_rotacionarEsquerda(filho);
+		if((*raiz)->esq->prioridade < (*raiz)->dir->prioridade){
+			*raiz = no_rotacionarEsquerda(*raiz);
 		}
-		else tmp = no_rotacionarDireita(filho);
+		else{
+			*raiz = no_rotacionarDireita(*raiz);
+		}
 
-		if(filho == pai->esq) pai->esq = tmp;
-		if(filho == pai->dir) pai->dir = tmp;
-
-		no_remover(tmp, elemento);
+		no_remover(raiz, elemento);
 	}
+}
+
+static void no_uniao(NO *no, SET *C){
+	if(no == NULL)
+		return;
+	
+	set_inserir(C, no->elemento);
+
+	no_uniao(no->esq, C);
+	no_uniao(no->dir, C);
 }
 
 static NO* no_rotacionarEsquerda(NO *raiz){
@@ -145,6 +142,14 @@ static NO* no_rotacionarDireita(NO *raiz){
 	aux->dir = raiz;
 
 	return aux;
+}
+
+static void no_imprimir(NO* raiz){
+	if(raiz == NULL) return;
+
+	no_imprimir(raiz->esq);
+	printf("%d ", raiz->elemento);
+	no_imprimir(raiz->dir);
 }
 
 static void no_apagar(NO *no){
@@ -187,24 +192,26 @@ bool set_pertence(SET *A, int elemento){
 }
 
 bool set_inserir(SET *s, int elemento){
-	return no_inserir(s->raiz, elemento, rand());
+	return no_inserir(&s->raiz, elemento, rand() % 1000);
 }
 
 bool set_remover(SET *s, int elemento){
 	if(!no_busca(s->raiz, elemento)) return false;
 
-	no_remover(s->raiz, elemento);
+	no_remover(&s->raiz, elemento);
 
 	return true;
 }
 
 void set_apagar(SET **s){
 	no_apagarArvore((*s)->raiz);
-	free(s);
+	free(*s);
+	*s = NULL;
 }
 
 void set_imprimir(SET *s){
-	
+	no_imprimir(s->raiz);
+	printf("\n");
 }
 
 SET *set_uniao(SET *A, SET *B){
@@ -219,5 +226,6 @@ SET *set_uniao(SET *A, SET *B){
 }
 
 SET *set_interseccao(SET *A, SET *B){
+	SET *C;
 	return NULL;
 }
