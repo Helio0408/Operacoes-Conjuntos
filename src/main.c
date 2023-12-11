@@ -4,6 +4,11 @@
 #include <string.h>
 #include "set.h"
 
+/* Trabalho SET de algoritmos e estrutura de dados
+ * Alunos:
+ * Gabriel Martins Monteiro (N°USP: 14572099)
+ * Hélio Márcio Cabral Santos (N°USP: 14577862) */
+
 int main(){
 	srand(time(NULL));
 	SET *A, *B;
@@ -29,7 +34,7 @@ int main(){
   	}
 
 	while(!quit){
-  		scanf("%s", op);
+  		scanf("%s", op); /* scanear operador */
 
 		if(!strcmp(op, "quit")){
 			quit = 1;
