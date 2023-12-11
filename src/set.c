@@ -15,12 +15,14 @@ struct set{
 /* funções locais */
 static NO* no_criar(int elemento, int prioridade);
 static NO* no_busca(NO *raiz, int elemento);
-static void no_inserir(NO *raiz, int elemento, int prioridade);
+static bool no_inserir(NO *raiz, int elemento, int prioridade);
 static void no_remover(NO *raiz, int elemento);
 static NO *no_rotacionarEsquerda(NO *raiz);
 static NO *no_rotacionarDireita(NO *raiz);
+static void no_imprimir(NO* raiz);
 static void no_apagar(NO *no);
 static void no_apagarArvore(NO *no);
+static void no_uniao(NO *no, SET *C);
 
 static NO *no_criar(int elemento, int prioridade){
 	NO *no = (NO*) malloc(sizeof(NO));
@@ -158,6 +160,16 @@ static void no_apagarArvore(NO *no){
 	no_apagar(no);
 }
 
+static void no_uniao(NO *no, SET *C){
+	if(no == NULL)
+		return;
+	
+	set_inserir(C, no->elemento);
+
+	no_uniao(no->esq, C);
+	no_uniao(no->dir, C);
+}
+
 SET *set_criar(void){
 	SET *s;
 
@@ -168,7 +180,7 @@ SET *set_criar(void){
 }
 
 bool set_pertence(SET *A, int elemento){
-	if(no_busca(A->raiz, elemento) != NULL);
+	if(no_busca(A->raiz, elemento) != NULL)
 		return true;
 	else
 		return false;
@@ -187,7 +199,7 @@ bool set_remover(SET *s, int elemento){
 }
 
 void set_apagar(SET **s){
-	no_apagarArvore((&s)->raiz);
+	no_apagarArvore((*s)->raiz);
 	free(s);
 }
 
@@ -196,7 +208,14 @@ void set_imprimir(SET *s){
 }
 
 SET *set_uniao(SET *A, SET *B){
-	return NULL;
+	SET *C;
+	
+	C = set_criar();
+
+	no_uniao(A->raiz, C);
+	no_uniao(B->raiz, C);
+
+	return C;
 }
 
 SET *set_interseccao(SET *A, SET *B){
