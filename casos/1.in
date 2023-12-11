@@ -1,0 +1,15 @@
+5 3
+4 1234 01923 3 34
+2 4 3
+remover b 3
+interseccao
+adicionar b 3
+interseccao
+imprimir
+remover a 4
+remover a 1234
+remover a 01923
+remover a 3
+imprimir
+uniao
+quit

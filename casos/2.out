@@ -1,0 +1,7 @@
+a: 36 3023 11901 16041 20458 29225 29682 
+b: 1838 11827 23076 23827 
+interseccao: 
+uniao: 36 1838 3023 11827 11901 16041 20458 23076 23827 29225 29682 
+36 pertence ao conjunto a
+11827 pertence ao conjunto b
+1838 pertence ao conjunto b
