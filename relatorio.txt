@@ -31,7 +31,7 @@ Essa função possui complexidade O(log(n)), pois necessita buscar o elemento na
 sua posição e depois removê-lo.
 
 ## set_imprimir
-Essa função possui complexidade O(log(n)), pois precisa percorrer a árvore
+Essa função possui complexidade O(n), pois precisa percorrer a árvore
 binária.
 
 ## set_pertence
