@@ -1,0 +1,49 @@
+-- Relatório trabalho SET --
+
+# Trabalho dos alunos:
+- Gabriel Martins Monteiro (N°USP: 14572099)
+- Hélio Márcio Cabral Santos (N°USP: 14577862)
+
+# Descrição
+Nesse trabalho, foi necessário criar um TAD que implementasse operações básicas
+e específicas de um conjunto. Para isso, utilizamos como base a estrutura de
+dados 'Treap'. Nós a utilizamos porque ela tem uma alta eficiência em seus
+algoritmos de inserção, busca e remoção, porém é computacionalmente mais fácil
+de ser implementada do que outras estruturas semelhantes como AVL e LLRB.
+A alta eficiência nessas funções citadas será bastante útil, pois são as funções
+mais utilizadas em operações de conjunto.
+
+# Funções e suas Complexidades
+
+## set_criar
+Essa função possui complexidade O(1).
+
+## set_apagar
+Essa função possui complexidade O(log(n)), pois precisa percorrer todo o percur-
+so da árvore binária.
+
+## set_inserir
+Essa função possui complexidade O(log(n)), pois precisa buscar o elemento na sua
+posição correta.
+
+## set_remover
+Essa função possui complexidade O(log(n)), pois necessita buscar o elemento na
+sua posição e depois removê-lo.
+
+## set_imprimir
+Essa função possui complexidade O(log(n)), pois precisa percorrer a árvore
+binária.
+
+## set_pertence
+Já que essa função é basicamente uma função de busca, ela possui a complexidade
+normal de uma busca em árvore binária, que nesse caso é O(log(n)).
+
+## set_uniao
+Essa função realiza a união de dois conjuntos. Visto que se o conjunto final
+possuir 'n' elementos, terá sido feito n inserções no conjunto final. Com isso,
+a complexidade será O(n * log(n))
+
+## set_interseccao
+Essa função realiza a interseccao de dois conjuntos. Visto que se o conjunto
+final possuir 'n' elementos, terá sido feito n inserções no conjunto final e n
+buscar no conjunto. Com isso, a complexidade será O(n * log(n))
