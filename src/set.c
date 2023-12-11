@@ -194,7 +194,7 @@ bool set_pertence(SET *A, int elemento){
 }
 
 bool set_inserir(SET *s, int elemento){
-	return no_inserir(&s->raiz, elemento, rand() % 1000);
+	return no_inserir(&s->raiz, elemento, rand() % 100000);
 }
 
 bool set_remover(SET *s, int elemento){
