@@ -60,6 +60,9 @@ int main(){
     	}
 	}
 
+	set_imprimir(A);
+	set_imprimir(B);
+
 	set_apagar(&A);
 	set_apagar(&B);
     
